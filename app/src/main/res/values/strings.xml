@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Auth Preference Tutorial</string>
     <string name="userId_placeholder">Enter User Id</string>
+    <string name="header_title_placeholder">Enter Header Title</string>
+    <string name="header_value_placeholder">Enter Header Value</string>
+    <string-array name="user_status">
+        <item>Select User Status</item>
+        <item>Active</item>
+        <item>In Active</item>
+    </string-array>
 </resources>
