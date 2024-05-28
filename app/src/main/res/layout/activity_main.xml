@@ -189,6 +189,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/submit_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15sp"
@@ -197,7 +198,8 @@
                 android:layout_gravity="bottom"
                 android:background="@drawable/button_background"
                 app:backgroundTint="@null"
-                android:text="@string/submit" />
+                android:text="@string/submit"
+                android:textSize="18sp"/>
 
         </LinearLayout>
 
