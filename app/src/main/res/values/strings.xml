@@ -1,11 +1,17 @@
 <resources>
     <string name="app_name">Auth Preference Tutorial</string>
+    <string name="user_id">User ID</string>
+    <string name="user_status">User Status</string>
+    <string name="headers">Headers</string>
+    <string name="header1">Header 01</string>
+    <string name="header2">Header 02</string>
     <string name="userId_placeholder">Enter User Id</string>
-    <string name="header_title_placeholder">Enter Header Title</string>
-    <string name="header_value_placeholder">Enter Header Value</string>
+    <string name="header_title_placeholder">Title</string>
+    <string name="header_value_placeholder">Value</string>
     <string-array name="user_status">
         <item>Select User Status</item>
         <item>Active</item>
         <item>In Active</item>
     </string-array>
+    <string name="submit">Submit</string>
 </resources>
