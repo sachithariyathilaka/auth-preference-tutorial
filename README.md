@@ -7,6 +7,9 @@ Android project for demonstrate the auth preference library.
   * Auth Preference 1.0.1
   * Gradle
 
+* ### Configurations
+  * https://medium.com/@sachithariyathilaka/auth-preference-android-library-1adb605f101c
+
 * ### Release Note
 
     * Release: 1.0.0
