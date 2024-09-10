@@ -44,9 +44,18 @@ public class MainActivity extends AppCompatActivity {
 
         setUserStatus();
 
+        EditText userId = findViewById(R.id.userId);
+        Spinner userStatus = findViewById(R.id.userStatus);
+        EditText header1Title = findViewById(R.id.header1_title);
+        EditText header2Title = findViewById(R.id.header2_title);
+        EditText header1Value = findViewById(R.id.header1_value);
+        EditText header2Value = findViewById(R.id.header2_value);
+
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
         Button submitBtn = findViewById(R.id.submit_btn);
-        submitBtn.setOnClickListener(onSubmit());
+        submitBtn.setOnClickListener(onSubmit(userId, userStatus, header1Title, header2Title, header1Value, header2Value));
+
+        setAuthPreferences(userId, userStatus, header1Title, header2Title, header1Value, header2Value);
     }
 
     /**
@@ -63,26 +72,27 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Handle click event of submit button.
      *
+     * @param   userId the user id edit text
+     * @param   userStatus the user status spinner
+     * @param   header1Title the header 01 title edit text
+     * @param   header2Title the header 02 title edit text
+     * @param   header1Value the header 01 value edit text
+     * @param   header2Value the header 02 value edit text
+     *
      * @return  the on click listener
      */
-    private View.OnClickListener onSubmit() {
+    private View.OnClickListener onSubmit(EditText userId, Spinner userStatus, EditText header1Title, EditText header2Title, EditText header1Value, EditText header2Value) {
         return v -> {
             Toast.makeText(this, "Please wait...", Toast.LENGTH_SHORT).show();
             v.setVisibility(View.GONE);
 
             String message;
-            EditText userId = findViewById(R.id.userId);
-            Spinner userStatus = findViewById(R.id.userStatus);
-            EditText header1Title = findViewById(R.id.header1_title);
-            EditText header2Title = findViewById(R.id.header2_title);
-            EditText header1Value = findViewById(R.id.header1_value);
-            EditText header2Value = findViewById(R.id.header2_value);
 
             try {
 
                 if (validateRequest(userId, userStatus, header1Title, header2Title, header1Value, header2Value))
                 {
-                    UserDetail userDetail = new UserDetail(userId.getText().toString(), userStatus.getSelectedItem().toString().equals("Active"));
+                    UserDetail userDetail = new UserDetail(userId.getText().toString(), userStatus.getSelectedItemPosition() == 1);
                     AuthPreference.saveUserDetails(this, userDetail);
 
                     List<Header> headers = new ArrayList<>();
@@ -90,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
                     headers.add(new Header(header2Title.getText().toString(), header2Value.getText().toString()));
                     AuthPreference.saveHeaders(this, headers);
 
-                    resetForm(userId, userStatus, header1Title, header2Title, header1Value, header2Value);
                     message = "Data saved successfully!";
                 } else
                     message = "Please fill all required fields.";
@@ -102,25 +111,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             v.setVisibility(View.VISIBLE);
         };
-    }
-
-    /**
-     * Reset form after submission.
-     *
-     * @param   userId the user id edit text
-     * @param   userStatus the user status spinner
-     * @param   header1Title the header 1 title edit text
-     * @param   header2Title the header 2 title edit text
-     * @param   header1Value the header 1 value edit text
-     * @param   header2Value the header 2 value edit text
-     */
-    private void resetForm(EditText userId, Spinner userStatus, EditText header1Title, EditText header2Title, EditText header1Value, EditText header2Value) {
-        userId.setText("");
-        userStatus.setSelection(0);
-        header1Title.setText("");
-        header1Value.setText("");
-        header2Title.setText("");
-        header2Value.setText("");
     }
 
     /**
@@ -140,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         if (userId.getText().toString().isEmpty() || userId.getText().toString().isBlank())
             return false;
 
-        if (userStatus.getSelectedItem().toString().equals("Select User Status"))
+        if (userStatus.getSelectedItemPosition() == 0)
             return false;
 
         if (header1Title.getText().toString().isEmpty() || header1Title.getText().toString().isBlank())
@@ -152,9 +142,41 @@ public class MainActivity extends AppCompatActivity {
         if (header1Value.getText().toString().isEmpty() || header1Value.getText().toString().isBlank())
             return false;
 
-        if (header2Value.getText().toString().isEmpty() || header2Value.getText().toString().isBlank())
-            return false;
-
-        return true;
+        return !header2Value.getText().toString().isEmpty() && !header2Value.getText().toString().isBlank();
     }
+
+    /**
+     * Set auth preference data.
+     *
+     * @param   userId the user id edit text
+     * @param   userStatus the user status spinner
+     * @param   header1Title the header 01 title edit text
+     * @param   header2Title the header 02 title edit text
+     * @param   header1Value the header 01 value edit text
+     * @param   header2Value the header 02 value edit text
+     */
+    private void setAuthPreferences(EditText userId, Spinner userStatus, EditText header1Title, EditText header2Title, EditText header1Value, EditText header2Value) {
+        List<String> headerNames = new ArrayList<>();
+        headerNames.add("Header 01");
+        headerNames.add("Header 02");
+
+        UserDetail userDetail = AuthPreference.getUserDetails(this);
+        List<Header> headerList = AuthPreference.getHeaders(this, headerNames);
+
+        if (!userDetail.getUserId().isEmpty()) {
+            Toast.makeText(this, "Existing user data found!", Toast.LENGTH_SHORT).show();
+
+            userId.setText(userDetail.getUserId());
+            userStatus.setSelection(userDetail.isStatus() ? 1 : 2);
+
+            Header header1 = headerList.get(0);
+            header1Title.setText(header1.getName());
+            header1Value.setText(header1.getName());
+
+            Header header2 = headerList.get(1);
+            header2Title.setText(header2.getName());
+            header2Value.setText(header2.getName());
+        }
+    }
+
 }
