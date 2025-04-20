@@ -8,12 +8,12 @@ Android project for demonstrate the auth preference library.
   * Gradle
 
 * ### Configurations
-  * https://medium.com/@sachithariyathilaka/auth-preference-android-library-1adb605f101c
+  * [Read on Medium](https://medium.com/@sachithariyathilaka/auth-preference-android-library-1adb605f101c)
 
 * ### Release Note
 
-    * Release: 1.0.0
-    * Date: 2024/05/07
+    * Version: 1.0.0
+    * Release Date: 2024/05/07
     * Module: Auth Preference Tutorial
     * Changes
         * Develop the tutorial project for auth preference library.
